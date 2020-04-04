@@ -38,7 +38,14 @@ public class GetOrderDao {
              PreparedStatement ps = createPreparedStatement(con, paramsDto.getOrderId());
              ResultSet rs = createResultSet(ps)
         ) {
-
+            if(rs!=null){
+                orderDto= new OrderDto();
+                rs.next();
+                orderDto.setOrderId(rs.getLong(1));
+                orderDto.setCustomerId(rs.getLong(2));
+                orderDto.setDate(rs.getDate(3));
+                orderDto.setStatus(rs.getString(4));
+            }
         } catch (SQLException ex) {
             ExceptionHandler.handleException(ex);
         }
@@ -54,7 +61,8 @@ public class GetOrderDao {
      * @throws SQLException In case of an error
      */
     private PreparedStatement createPreparedStatement(Connection con, long orderId) throws SQLException {
-        PreparedStatement statement= new con.prepareStatement(query+orderId);
+        PreparedStatement statement= con.prepareStatement(query);
+        statement.setLong(1, orderId);
         return statement;
     }
 
@@ -65,7 +73,7 @@ public class GetOrderDao {
      * @throws SQLException In case of an error
      */
     private ResultSet createResultSet(PreparedStatement ps) throws SQLException {
-        ResultSet results= ps.getResultSet();
+        ResultSet results= ps.executeQuery();
         return results;
     }
 }
