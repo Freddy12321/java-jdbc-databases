@@ -5,6 +5,7 @@ import com.pluralsight.order.dto.ParamsDto;
 import com.pluralsight.order.util.Database;
 import com.pluralsight.order.util.ExceptionHandler;
 
+import javax.xml.crypto.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ public class GetOrderDao {
     public OrderDto getOrderById(ParamsDto paramsDto) {
         OrderDto orderDto = null;
 
-        try (Connection con = null;
+        try (Connection con = database.getConnection();
              PreparedStatement ps = createPreparedStatement(con, paramsDto.getOrderId());
              ResultSet rs = createResultSet(ps)
         ) {
@@ -53,8 +54,8 @@ public class GetOrderDao {
      * @throws SQLException In case of an error
      */
     private PreparedStatement createPreparedStatement(Connection con, long orderId) throws SQLException {
-
-        return null;
+        PreparedStatement statement= new con.prepareStatement(query+orderId);
+        return statement;
     }
 
     /**
@@ -64,6 +65,7 @@ public class GetOrderDao {
      * @throws SQLException In case of an error
      */
     private ResultSet createResultSet(PreparedStatement ps) throws SQLException {
-        return null;
+        ResultSet results= ps.getResultSet();
+        return results;
     }
 }
